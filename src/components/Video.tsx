@@ -1,6 +1,6 @@
 export default function VideoSection() {
   return (
-    <section className="bg-[#f8f9fa] py-16 bg-gradient-to-b from-white">
+    <section className="py-16 bg-[#f6f9fe]/50">
       <div className="grid grid-cols-1 lg:grid-cols-3">
         {/* Left side */}
         <div className="col-span-1 flex flex-col justify-end px-8 lg:px-24">

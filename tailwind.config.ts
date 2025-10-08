@@ -2,7 +2,12 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -13,6 +18,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['"Prompt"', "ui-sans-serif", "system-ui"],
+        heading: ['"Prompt"', "ui-sans-serif", "system-ui"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -51,14 +60,14 @@ export default {
         },
       },
       backgroundImage: {
-        'gradient-primary': 'var(--gradient-primary)',
-        'gradient-accent': 'var(--gradient-accent)',
-        'gradient-hero': 'var(--gradient-hero)',
+        "gradient-primary": "var(--gradient-primary)",
+        "gradient-accent": "var(--gradient-accent)",
+        "gradient-hero": "var(--gradient-hero)",
       },
       boxShadow: {
-        'elegant': 'var(--shadow-elegant)',
-        'glow': 'var(--shadow-glow)',
-        'card': 'var(--shadow-card)',
+        elegant: "var(--shadow-elegant)",
+        glow: "var(--shadow-glow)",
+        card: "var(--shadow-card)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -94,7 +103,7 @@ export default {
           from: { opacity: "0", transform: "scale(0.95)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
-        "glow": {
+        glow: {
           "0%, 100%": { boxShadow: "0 0 20px hsl(var(--accent) / 0.3)" },
           "50%": { boxShadow: "0 0 40px hsl(var(--accent) / 0.6)" },
         },
@@ -107,10 +116,10 @@ export default {
         "fade-in-right": "fade-in-right 0.8s ease-out",
         "slide-up": "slide-up 0.7s ease-out",
         "scale-in": "scale-in 0.5s ease-out",
-        "glow": "glow 2s ease-in-out infinite",
+        glow: "glow 2s ease-in-out infinite",
       },
       transitionTimingFunction: {
-        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
       },
     },
   },
