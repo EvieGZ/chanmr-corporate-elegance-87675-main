@@ -91,7 +91,7 @@ export default function VideoSection() {
               >
                 <img
                   src={slides[currentSlide].image}
-                  alt={slides[currentSlide].title}
+                  alt={`Slide ${currentSlide + 1}`}
                   className="w-full h-full object-cover"
                 />
               </motion.div>

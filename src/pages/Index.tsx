@@ -7,13 +7,13 @@ import About from "@/components/About";
 import News from "@/components/News";
 import Footer from "@/components/Footer";
 import VideoSection from "@/components/Video";
-import FacebookSection from "@/components/Facebook";
 import ConnectWithUs from "@/components/ConnectWithUs";
 import Quote from "@/components/Quote";
 import Carousel from "@/components/Carousel";
 import FAQSection from "@/components/FAQ";
 import CultureSection from "@/components/Culture";
 import AffiliatesSection from "@/components/OurCompany";
+import InsightsSection from "@/components/Facebook";
 
 
 const Index = () => {
@@ -35,7 +35,7 @@ const Index = () => {
       <Services language={language} />
       <About language={language} />
       <News language={language} />
-      <FacebookSection />
+      <InsightsSection language={language} />
       <CultureSection language={language} />
       <FAQSection language={language} />
       <ConnectWithUs language={language} />
