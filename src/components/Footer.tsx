@@ -1,4 +1,4 @@
-import { Facebook, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Phone, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/chanmr-logo.png";
 
@@ -38,9 +38,9 @@ const Footer = () => {
   ];
 
   const socials = [
-    { icon: <Linkedin size={18} />, href: "#" },
-    { icon: <Facebook size={18} />, href: "#" },
-    { icon: <Twitter size={18} />, href: "#" },
+    { icon: <Facebook size={18} />, href: "https://www.facebook.com/ChanMR.GROUP/" },
+    { icon: <Youtube size={18} />, href: "https://www.youtube.com/channel/UCEq-QMRClwE9kVxWHc82hVw" },
+    { icon: <Phone size={18} />, href: "#" },
   ];
 
   const bottomLinks = [

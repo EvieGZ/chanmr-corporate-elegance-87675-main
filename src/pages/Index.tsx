@@ -13,6 +13,7 @@ import Quote from "@/components/Quote";
 import Carousel from "@/components/Carousel";
 import FAQSection from "@/components/FAQ";
 import CultureSection from "@/components/Culture";
+import AffiliatesSection from "@/components/OurCompany";
 
 
 const Index = () => {
@@ -28,6 +29,7 @@ const Index = () => {
       <Hero language={language} />
       <VideoSection />
       <Quote language={language} />
+      <AffiliatesSection language={language} />
       <InteractiveNumbers language={language} />
       <Carousel language={language} />
       <Services language={language} />

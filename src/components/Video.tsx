@@ -1,59 +1,118 @@
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, ArrowLeft } from "lucide-react";
+
+import videoFile from "@/assets/main.mp4";
+import Slide1 from "@/assets/slide1.png";
+import Slide2 from "@/assets/slide2.png";
+import Slide3 from "@/assets/slide3.png";
+import Slide4 from "@/assets/slide4.png";
+
 export default function VideoSection() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      image: Slide1,
+    },
+    {
+      image: Slide2,
+    },
+    {
+      image: Slide3,
+    },
+    {
+      image: Slide4,
+    },
+  ];
+
+  useEffect(() => {
+    if (isPlaying) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isPlaying, slides.length]);
+
   return (
     <section className="py-16 bg-[#f6f9fe]/50">
       <div className="grid grid-cols-1 lg:grid-cols-3">
-        {/* Left side */}
+        {/* Left Side */}
         <div className="col-span-1 flex flex-col justify-end px-8 lg:px-24">
           <div className="mb-6">
             <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
-              Lorem ipsum
+              Who we are
             </p>
             <div className="w-8 h-[2px] bg-[#F4C025] mt-1"></div>
           </div>
 
           <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-6 leading-snug">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Delivering excellence through innovation, safety, and trust.
           </h2>
 
-          <p className="text-gray-700 leading-relaxed mb-6">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-            facilisi. Sed gravida, lorem sit amet consectetur suscipit, purus
-            nisl facilisis urna, eget commodo justo lectus ut lorem. Curabitur
-            ut justo sit amet eros vehicula ultricies ut id elit.
+          <p className="text-gray-700 leading-relaxed mb-8">
+            At CHAN MR Group, we focus on precision, sustainability, and client
+            satisfaction.
           </p>
 
-          <p className="text-gray-700 leading-relaxed mb-10">
-            Fusce aliquet, lorem non consequat tincidunt, sem metus fermentum
-            mauris, vitae luctus nisl erat vel arcu. Maecenas ultricies, eros
-            quis ultricies malesuada, leo justo egestas mi, at laoreet neque
-            ipsum non justo. Sed at lorem vitae metus placerat varius.
-          </p>
-
-          {/* Links */}
-          <div className="flex flex-wrap gap-6 pt-6  font-medium text-sm">
-            <a href="#" className="underline hover:no-underline">
-              Lorem ipsum
-            </a>
-            <a
-              href="#"
-              className="underline hover:no-underline border-x px-6 border-slate-300"
+          {!isPlaying ? (
+            <button
+              onClick={() => setIsPlaying(true)}
+              className="inline-flex items-center space-x-2 bg-[#F4C025] text-gray-900 font-medium px-6 py-3 rounded-full shadow hover:bg-[#e4b222] transition-all"
             >
-              Dolor sit amet
-            </a>
-            <a href="#" className="underline hover:no-underline">
-              Consectetur elit
-            </a>
-          </div>
+              <Play className="w-5 h-5" />
+              <span>Watch Video</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => setIsPlaying(false)}
+              className="inline-flex items-center space-x-2 text-gray-700 font-medium px-6 py-3 rounded-full border border-gray-400 hover:bg-gray-100 transition-all"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span>Back to Slides</span>
+            </button>
+          )}
         </div>
 
-        {/* Right side - Video or image */}
-        <div className="col-span-2 bg-black">
-          <iframe
-            className="w-full h-full"
-            src="https://www.youtube.com/embed/Ah9fxkQrhQw?si=Nbmx60pl-dG68NNo"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
-          ></iframe>
+        {/* Right Side */}
+        <div className="col-span-2 bg-black relative overflow-hidden h-[500px]">
+          <AnimatePresence mode="wait">
+            {!isPlaying ? (
+              <motion.div
+                key="carousel"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6 }}
+                className="relative w-full h-full"
+              >
+                <img
+                  src={slides[currentSlide].image}
+                  alt={slides[currentSlide].title}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="video"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.6 }}
+                className="relative w-full h-full"
+              >
+                <video
+                  className="w-full h-full object-cover"
+                  src={videoFile}
+                  controls
+                  autoPlay
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

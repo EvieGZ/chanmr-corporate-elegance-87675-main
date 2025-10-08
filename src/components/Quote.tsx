@@ -20,7 +20,7 @@ const Quote = ({ language }: QuoteProps) => {
   return (
     <section
       ref={sectionRef}
-      className="py-24 relative bg-gradient-to-b from-[#f6f9fe] to-[#fef9ec]"
+      className="py-20 relative bg-gradient-to-b from-[#f6f9fe] to-[#fef9ec]"
     >
       {/* Soft overlay for depth */}
       <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px]" />
