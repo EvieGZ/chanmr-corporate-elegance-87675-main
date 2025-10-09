@@ -40,12 +40,12 @@ const Quote = ({ language }: QuoteProps) => {
         </div>
 
         {/* 🔸 Quote Section */}
-        <blockquote className="max-w-3xl mx-auto relative">
+        <blockquote className="max-w-3xl  mx-auto relative">
           {/* Large decorative quotes */}
           <span className="absolute -top-10 left-8 text-8xl text-accent/30 select-none">
             “
           </span>
-          <span className="absolute -bottom-14 -right-16 text-8xl text-accent/30 select-none">
+          <span className="absolute -bottom-14 right-8 text-8xl text-accent/30 select-none">
             ”
           </span>
 
@@ -53,17 +53,17 @@ const Quote = ({ language }: QuoteProps) => {
           <p className="text-3xl md:text-3xl font-semibold text-primary leading-relaxed whitespace-pre-line">
             {language === "EN"
               ? `We focus on building trust
-partners at all levels with quality work,
-deliver on time and after sales service.
-Looking beyond to the future 
-with modern technology,
-awareness of the environment and working safely.`
+                partners at all levels with quality work,
+                deliver on time and after sales service.
+                Looking beyond to the future 
+                with modern technology,
+                awareness of the environment and working safely.`
               : `เรามุ่งเน้นในการสร้างความไว้วางใจ
-และความร่วมมือกับพันธมิตรทุกระดับ
-ด้วยงานคุณภาพ ส่งมอบตรงเวลา
-พร้อมบริการหลังการขาย
-มองไปสู่อนาคตด้วยเทคโนโลยีที่ทันสมัย
-ใส่ใจสิ่งแวดล้อม และทำงานอย่างปลอดภัย`}
+                และความร่วมมือกับพันธมิตรทุกระดับ
+                ด้วยงานคุณภาพ ส่งมอบตรงเวลา
+                พร้อมบริการหลังการขาย
+                มองไปสู่อนาคตด้วยเทคโนโลยีที่ทันสมัย
+                ใส่ใจสิ่งแวดล้อม และทำงานอย่างปลอดภัย`}
           </p>
 
           {/* Accent Line */}

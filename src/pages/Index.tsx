@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import VideoSection from "@/components/Video";
 import ConnectWithUs from "@/components/ConnectWithUs";
 import Quote from "@/components/Quote";
-import Carousel from "@/components/Carousel";
+import Carousel from "@/components/carousel";
 import FAQSection from "@/components/FAQ";
 import CultureSection from "@/components/Culture";
 import AffiliatesSection from "@/components/OurCompany";
@@ -31,7 +31,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-">
       <Navbar
         language={language}
         onLanguageToggle={toggleLanguage}

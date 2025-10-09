@@ -76,7 +76,7 @@ export default function VideoSection({ language }: VideoSectionProps) {
           {!isPlaying ? (
             <button
               onClick={() => setIsPlaying(true)}
-              className="inline-flex items-center space-x-2 bg-[#F4C025] text-gray-900 font-medium px-6 py-3 rounded-full shadow hover:bg-[#e4b222] transition-all"
+              className="inline-flex items-center lg:mb-0 mb-3 space-x-2 bg-[#F4C025] text-gray-900 font-medium px-6 py-3 rounded-full shadow hover:bg-[#e4b222] transition-all"
             >
               <Play className="w-5 h-5" />
               <span>{t.watchVideo}</span>
@@ -84,7 +84,7 @@ export default function VideoSection({ language }: VideoSectionProps) {
           ) : (
             <button
               onClick={() => setIsPlaying(false)}
-              className="inline-flex items-center space-x-2 text-gray-700 font-medium px-6 py-3 rounded-full border border-gray-400 hover:bg-gray-100 transition-all"
+              className="inline-flex items-center lg:mb-0 mb-3 space-x-2 text-gray-700 font-medium px-6 py-3 rounded-full border border-gray-400 hover:bg-gray-100 transition-all"
             >
               <ArrowLeft className="w-5 h-5" />
               <span>{t.backToSlides}</span>
@@ -93,7 +93,7 @@ export default function VideoSection({ language }: VideoSectionProps) {
         </div>
 
         {/* Right Side */}
-        <div className="col-span-2 bg-black relative overflow-hidden h-[500px]">
+        <div className="col-span-2 bg-black relative overflow-hidden h-auto lg:h-[500px]">
           <AnimatePresence mode="wait">
             {!isPlaying ? (
               <motion.div
@@ -107,7 +107,7 @@ export default function VideoSection({ language }: VideoSectionProps) {
                 <img
                   src={slides[currentSlide].image}
                   alt={`Slide ${currentSlide + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain lg:object-cover"
                 />
               </motion.div>
             ) : (
@@ -119,12 +119,12 @@ export default function VideoSection({ language }: VideoSectionProps) {
                 transition={{ duration: 0.6 }}
                 className="relative w-full h-full"
               >
-                {/* <video
-                  className="w-full h-full object-cover"
+                <video
+                  className="w-full h-full object-contain lg:object-cover"
                   src={videoFile}
                   controls
                   autoPlay
-                /> */}
+                />
               </motion.div>
             )}
           </AnimatePresence>

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -34,25 +35,26 @@ const NewsCard = ({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setTimeout(() => setIsVisible(true), index * 150);
         }
       },
       { threshold: 0.1 }
     );
 
-    if (cardRef.current) observer.observe(cardRef.current);
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
     return () => observer.disconnect();
   }, [index]);
 
   return (
-    <motion.div
+    <div
       ref={cardRef}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isVisible ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.02 }}
-      className="bg-card rounded-xl w-full h-full shadow-card hover:shadow-elegant transition-all duration-500 overflow-hidden group cursor-pointer flex flex-col"
+      className={`bg-card rounded-lg w-full h-full shadow-card hover:shadow-elegant transition-all duration-500 overflow-hidden group cursor-pointer ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      }`}
     >
-      {/* 🔹 ภาพด้านบน */}
       <div className="relative w-full h-48 overflow-hidden">
         <img
           src={image}
@@ -61,38 +63,29 @@ const NewsCard = ({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
       </div>
-
-      {/* 🔹 เนื้อหาด้านล่าง */}
-      <div className="flex flex-col justify-between flex-grow p-6">
-        <div>
-          <div className="flex items-center space-x-4 mb-3">
-            <span className="px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full">
-              {category}
-            </span>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Calendar className="w-4 h-4 mr-1" />
-              {date}
-            </div>
+      <div className="p-6">
+        <div className="flex items-center space-x-4 mb-3">
+          <span className="px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full">
+            {category}
+          </span>
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Calendar className="w-4 h-4 mr-1" />
+            {date}
           </div>
-
-          <h3 className="text-xl font-bold text-card-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-            {title}
-          </h3>
-
-          <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-3">
-            {excerpt}
-          </p>
         </div>
 
-        <Button
-          variant="link"
-          className="p-0 h-auto text-primary group/btn self-start"
-        >
+        <h3 className="text-xl font-bold text-card-foreground mb-3 group-hover:text-primary transition-colors">
+          {title}
+        </h3>
+
+        <p className="text-muted-foreground mb-4 leading-relaxed">{excerpt}</p>
+
+        <Button variant="link" className="p-0 h-auto text-primary group/btn">
           Read more
           <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
         </Button>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -102,8 +95,15 @@ interface NewsProps {
 
 const News = ({ language }: NewsProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const prevCard = () => setActiveIndex((prev) => Math.max(prev - 1, 0));
-  const nextCard = () => setActiveIndex((prev) => Math.min(prev + 1, 3));
+  const prevCard = () => {
+    setActiveIndex(activeIndex - 1);
+  };
+
+  const nextCard = () => {
+    setActiveIndex(activeIndex + 1);
+  };
+
+  const isMobile = () => window.innerWidth <= 768;
 
   const articles =
     language === "EN"
@@ -210,8 +210,7 @@ const News = ({ language }: NewsProps) => {
 
   return (
     <section className="relative pb-24 pt-14 bg-background overflow-hidden">
-      <div className="container px-6">
-        {/* Header */}
+      <div className="container mx-auto px-6">
         <div className="mb-6 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
             {language === "EN"
@@ -225,51 +224,58 @@ const News = ({ language }: NewsProps) => {
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="relative flex w-full h-[550px] overflow-hidden gap-4 rounded-2xl transition-all duration-500">
-          {/* Prev */}
+        <div className="relative flex w-full mx-auto h-[500px] overflow-hidden gap-2 rounded-2xl transition-all duration-500">
           <button
             onClick={prevCard}
-            disabled={activeIndex <= 0}
-            className={`absolute top-1/2 left-0 -translate-y-1/2 z-50 bg-black/40 text-white p-3 rounded-r-lg transition
-            ${
-              activeIndex <= 0
-                ? "opacity-30 cursor-not-allowed"
-                : "hover:bg-black/70"
-            }`}
+            disabled={activeIndex <= 0} // disable at the start
+            className={`absolute top-12 right-0 z-50 bg-black/50 text-white p-3 transition
+      ${
+        activeIndex <= 0 ? "opacity-30 cursor-not-allowed" : "hover:bg-black/70"
+      }`}
           >
             ‹
           </button>
-
-          {/* Next */}
           <button
             onClick={nextCard}
-            disabled={activeIndex >= articles.length - 3}
-            className={`absolute top-1/2 right-0 -translate-y-1/2 z-50 bg-black/40 text-white p-3 rounded-l-lg transition
-            ${
-              activeIndex >= articles.length - 3
-                ? "opacity-30 cursor-not-allowed"
-                : "hover:bg-black/70"
-            }`}
+            disabled={
+              isMobile()
+                ? activeIndex >= articles.length - 1
+                : activeIndex >= articles.length - 3
+            }
+            className={`absolute top-0 right-0 z-50 bg-black/50 text-white p-3 transition
+    ${
+      isMobile()
+        ? activeIndex >= articles.length - 1
+          ? "opacity-30 cursor-not-allowed"
+          : "hover:bg-black/70"
+        : activeIndex >= articles.length - 3
+        ? "opacity-30 cursor-not-allowed"
+        : "hover:bg-black/70"
+    }`}
           >
             ›
           </button>
 
-          {/* News Cards */}
           <div
-            className="flex h-full transition-transform duration-200 ease-in-out gap-4"
+            className="flex h-full transition-transform ease-in-out"
             style={{
-              transform: `translateX(-${activeIndex * 25}%)`,
+              transform: `translateX(-${activeIndex * 25}%)`, // slide left by 25% per card
+              transitionDuration: "1500ms",
             }}
           >
             {articles.map((article, index) => {
               const isActive = index === activeIndex;
+
               return (
                 <div
                   key={article.title}
-                  className={`flex-shrink-0 h-full transition-all duration-200 ease-in-out ${
-                    isActive ? "w-1/2" : "w-1/4"
-                  }`}
+                  className={`flex-shrink-0 h-full transition-all ease-in-out ${
+                    index !== articles.length - 1 && "pr-2"
+                  } r-2 ${isActive ? "w-1/2" : "w-1/4"}`}
+                  style={{
+                    transformOrigin: "left",
+                    transitionDuration: "1500ms",
+                  }}
                 >
                   <NewsCard {...article} index={index} />
                 </div>
@@ -279,7 +285,7 @@ const News = ({ language }: NewsProps) => {
         </div>
       </div>
 
-      {/* Watermark */}
+      {/* 🔹 Watermark */}
       <div className="absolute bottom-0 left-0 w-full -mb-4">
         <motion.h3
           initial={{ opacity: 0, y: 30 }}

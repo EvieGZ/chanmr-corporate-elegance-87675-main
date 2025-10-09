@@ -30,19 +30,19 @@ const CultureSection = ({ language }: CultureSectionProps) => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-   return (
-    <section className="w-full flex flex-col md:flex-row">
+  return (
+    <section className="w-full flex flex-col lg:flex-row">
       {/* 🔹 Left: Image Carousel */}
-      <div className="relative w-full md:w-2/6 md:h-auto overflow-hidden">
+      <div className="relative w-full bg-black lg:h-auto h-80 lg:w-2/6 overflow-hidden">
         <AnimatePresence>
           <motion.img
             key={images[current]}
             src={images[current]}
-                alt={`Slide ${current + 1}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1.2, ease: "easeInOut" }}
+            alt={`Slide ${current + 1}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
             className="absolute inset-0 w-full h-full object-cover"
           />
         </AnimatePresence>
