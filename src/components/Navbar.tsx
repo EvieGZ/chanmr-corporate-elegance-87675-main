@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import logo from "@/assets/chanmr-logo.png";
@@ -36,35 +36,34 @@ const Navbar = ({ language, onLanguageToggle, sectionRefs }: NavbarProps) => {
   };
 
   useEffect(() => {
-  const sections = Object.entries(sectionRefs || {}).map(([key, ref]) => ({
-    key,
-    element: ref.current,
-  }));
+    const sections = Object.entries(sectionRefs || {}).map(([key, ref]) => ({
+      key,
+      element: ref.current,
+    }));
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id); // เก็บ id ของ section ที่มองเห็น
-        }
-      });
-    },
-    {
-      threshold: 0.4, // มองเห็นเกิน 40% ถือว่า active
-    }
-  );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id); // เก็บ id ของ section ที่มองเห็น
+          }
+        });
+      },
+      {
+        threshold: 0.1, // มองเห็นเกิน 40% ถือว่า active
+      }
+    );
 
-  sections.forEach(({ element }) => {
-    if (element) observer.observe(element);
-  });
-
-  return () => {
     sections.forEach(({ element }) => {
-      if (element) observer.unobserve(element);
+      if (element) observer.observe(element);
     });
-  };
-}, [sectionRefs]);
 
+    return () => {
+      sections.forEach(({ element }) => {
+        if (element) observer.unobserve(element);
+      });
+    };
+  }, [sectionRefs]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -202,17 +201,26 @@ const Navbar = ({ language, onLanguageToggle, sectionRefs }: NavbarProps) => {
 
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-8 ml-auto">
-              {mainMenuItems.map((item) => (
-                <button
-                  key={item}
-                  onClick={() => toggleMenu(item)}
-                  className={`text-foreground hover:text-primary transition-colors duration-300 font-medium ${
-                    activeMenu === item ? "underline text-primary" : ""
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
+              {mainMenuItems.map((item) => {
+                const isActive = activeMenu === item;
+                return (
+                  <button
+                    key={item}
+                    onClick={() => toggleMenu(item)}
+                    className={`flex items-center space-x-1 text-foreground hover:text-primary transition-all duration-300 font-medium ${
+                      isActive ? "text-primary" : ""
+                    }`}
+                  >
+                    <span>{item}</span>
+                    {/* 🔻 ลูกศร พร้อมหมุนตอน active */}
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-300 ease-in-out ${
+                        isActive ? "rotate-180 text-primary" : "rotate-0"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
             </div>
 
             {/* Right Actions */}
@@ -337,39 +345,38 @@ const Navbar = ({ language, onLanguageToggle, sectionRefs }: NavbarProps) => {
             {/* 🔸 Left Menu */}
             <div className="flex items-center space-x-10">
               {secondaryMenuItems.map((item, idx) => {
-  const keys = ["whoWeAre", "core", "services", "news", "faq"];
-  const sectionKey = keys[idx];
-  const scrollMap = [
-    sectionRefs?.whoWeAre,
-    sectionRefs?.core,
-    sectionRefs?.services,
-    sectionRefs?.news,
-    sectionRefs?.faq,
-  ];
+                const keys = ["whoWeAre", "core", "services", "news", "faq"];
+                const sectionKey = keys[idx];
+                const scrollMap = [
+                  sectionRefs?.whoWeAre,
+                  sectionRefs?.core,
+                  sectionRefs?.services,
+                  sectionRefs?.news,
+                  sectionRefs?.faq,
+                ];
 
-  const isActive = activeSection === sectionKey;
+                const isActive = activeSection === sectionKey;
 
-  return (
-    <button
-      key={item}
-      onClick={() => handleScrollTo(scrollMap[idx])}
-      className={`relative text-sm whitespace-nowrap transition-colors duration-300 ${
-        isActive
-          ? "text-primary font-semibold"
-          : "text-muted-foreground hover:text-primary"
-      }`}
-    >
-      {item}
-      {/* เส้นใต้ตอน active */}
-      <span
-        className={`absolute bottom-[-4px] left-0 h-[2px] bg-primary transition-all duration-300 ${
-          isActive ? "w-full" : "w-0 group-hover:w-full"
-        }`}
-      />
-    </button>
-  );
-})}
-
+                return (
+                  <button
+                    key={item}
+                    onClick={() => handleScrollTo(scrollMap[idx])}
+                    className={`relative text-sm whitespace-nowrap transition-colors duration-300 ${
+                      isActive
+                        ? "text-primary font-semibold"
+                        : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    {item}
+                    {/* เส้นใต้ตอน active */}
+                    <span
+                      className={`absolute bottom-[-4px] left-0 h-[2px] bg-primary transition-all duration-300 ${
+                        isActive ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
             </div>
 
             {/* 🔸 Divider + Trending News */}
