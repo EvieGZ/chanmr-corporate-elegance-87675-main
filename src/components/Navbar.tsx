@@ -7,15 +7,14 @@ import logo from "@/assets/chanmr-logo.png";
 interface NavbarProps {
   language: "EN" | "TH";
   onLanguageToggle: () => void;
-  
-    sectionRefs?: {
+
+  sectionRefs?: {
     whoWeAre: React.RefObject<HTMLElement>;
     core: React.RefObject<HTMLElement>;
     services: React.RefObject<HTMLElement>;
     news: React.RefObject<HTMLElement>;
     faq: React.RefObject<HTMLElement>;
   };
-  
 }
 
 const Navbar = ({ language, onLanguageToggle, sectionRefs }: NavbarProps) => {
@@ -25,15 +24,46 @@ const Navbar = ({ language, onLanguageToggle, sectionRefs }: NavbarProps) => {
   const [hideTopNav, setHideTopNav] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-const handleScrollTo = (ref?: React.RefObject<HTMLElement>) => {
-  window.scrollTo({
-    top: ref.current.offsetTop - 100,
-    behavior: "smooth",
+  const handleScrollTo = (ref?: React.RefObject<HTMLElement>) => {
+    window.scrollTo({
+      top: ref.current.offsetTop - 100,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+  const sections = Object.entries(sectionRefs || {}).map(([key, ref]) => ({
+    key,
+    element: ref.current,
+  }));
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id); // เก็บ id ของ section ที่มองเห็น
+        }
+      });
+    },
+    {
+      threshold: 0.4, // มองเห็นเกิน 40% ถือว่า active
+    }
+  );
+
+  sections.forEach(({ element }) => {
+    if (element) observer.observe(element);
   });
-};
+
+  return () => {
+    sections.forEach(({ element }) => {
+      if (element) observer.unobserve(element);
+    });
+  };
+}, [sectionRefs]);
 
 
   useEffect(() => {
@@ -77,18 +107,30 @@ const handleScrollTo = (ref?: React.RefObject<HTMLElement>) => {
 
   const mainMenuItems =
     language === "EN"
-      ? ["Home", "About Us", "Services","Products", "Projects", "Ethics", "News", "Contact"]
-      : ["หน้าแรก", "เกี่ยวกับเรา", "บริการ", "สินค้า", "จรรยาบรรณ", "โครงการ", "ข่าวสาร", "ติดต่อเรา"];
+      ? [
+          "Home",
+          "About Us",
+          "Services",
+          "Products",
+          "Projects",
+          "Ethics",
+          "News",
+          "Contact",
+        ]
+      : [
+          "หน้าแรก",
+          "เกี่ยวกับเรา",
+          "บริการ",
+          "สินค้า",
+          "จรรยาบรรณ",
+          "โครงการ",
+          "ข่าวสาร",
+          "ติดต่อเรา",
+        ];
 
   const secondaryMenuItems =
     language === "EN"
-      ? [
-          "Who we are",
-          "Our Core",
-          "Our Services",
-          "Our News",
-          "Q&A",
-        ]
+      ? ["Who we are", "Our Core", "Our Services", "Our News", "Q&A"]
       : [
           "เราคือใคร",
           "หลักการของเรา",
@@ -118,34 +160,33 @@ const handleScrollTo = (ref?: React.RefObject<HTMLElement>) => {
       >
         {/* 🔹 TopNav */}
         {/* 🌤️ TopNav (แยกออกมาเลย) */}
-<div
-  className={`fixed top-5 left-0 right-0 z-[80] flex justify-end text-xs text-primary px-6 space-x-6 transition-all duration-500 transform-gpu ${
-    hideTopNav
-      ? "-translate-y-[100%] opacity-0 pointer-events-none"
-      : "translate-y-0 opacity-100"
-  }`}
->
-  {topNav.map((item) =>
-    item.onClick ? (
-      <button
-        key={item.name}
-        onClick={item.onClick}
-        className="hover:text-accent transition-colors duration-300"
-      >
-        {item.name}
-      </button>
-    ) : (
-      <Link
-        key={item.name}
-        to={item.path}
-        className="hover:text-accent transition-colors duration-300"
-      >
-        {item.name}
-      </Link>
-    )
-  )}
-</div>
-
+        <div
+          className={`fixed top-5 left-0 right-0 z-[80] flex justify-end text-xs text-primary px-6 space-x-6 transition-all duration-500 transform-gpu ${
+            hideTopNav
+              ? "-translate-y-[100%] opacity-0 pointer-events-none"
+              : "translate-y-0 opacity-100"
+          }`}
+        >
+          {topNav.map((item) =>
+            item.onClick ? (
+              <button
+                key={item.name}
+                onClick={item.onClick}
+                className="hover:text-accent transition-colors duration-300"
+              >
+                {item.name}
+              </button>
+            ) : (
+              <Link
+                key={item.name}
+                to={item.path}
+                className="hover:text-accent transition-colors duration-300"
+              >
+                {item.name}
+              </Link>
+            )
+          )}
+        </div>
 
         {/* 🔸 Main Navbar */}
         <div
@@ -281,42 +322,70 @@ const handleScrollTo = (ref?: React.RefObject<HTMLElement>) => {
       </nav>
 
       {/* 🔹 Secondary Navbar */}
-<div
-  className={`fixed left-0 right-0 z-[40] bg-secondary border-b border-border transition-all duration-500 ${
-    showSecondary
-      ? "top-[94px] opacity-100"
-      : "top-0 opacity-0 pointer-events-none"
-  }
-  ${hideTopNav ? "translate-y-0" : "translate-y-12"}    
-  `
-  }
->
-  <div className="container mx-auto px-6">
-    <div className="flex items-center space-x-6 py-3 overflow-x-auto">
-      {secondaryMenuItems.map((item, idx) => {
-        // ✅ map ค่าปุ่มแต่ละอันกับ section ที่เกี่ยวข้อง
-        const scrollMap = [
-          sectionRefs?.whoWeAre,
-          sectionRefs?.core,
-          sectionRefs?.services,
-          sectionRefs?.news,
-          sectionRefs?.faq,
-        ];
+      <div
+        className={`fixed left-0 right-0 z-[40] bg-[#E8F6F8] border-b border-border transition-all duration-500
+    ${
+      showSecondary
+        ? "top-[94px] opacity-100"
+        : "top-0 opacity-0 pointer-events-none"
+    }
+    ${hideTopNav ? "translate-y-0" : "translate-y-12"}
+  `}
+      >
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between py-3 overflow-x-auto">
+            {/* 🔸 Left Menu */}
+            <div className="flex items-center space-x-10">
+              {secondaryMenuItems.map((item, idx) => {
+  const keys = ["whoWeAre", "core", "services", "news", "faq"];
+  const sectionKey = keys[idx];
+  const scrollMap = [
+    sectionRefs?.whoWeAre,
+    sectionRefs?.core,
+    sectionRefs?.services,
+    sectionRefs?.news,
+    sectionRefs?.faq,
+  ];
 
-        return (
-          <button
-            key={item}
-            onClick={() => handleScrollTo(scrollMap[idx]!)}
-            className="text-sm text-muted-foreground hover:text-primary whitespace-nowrap transition-colors duration-300"
-          >
-            {item}
-          </button>
-        );
-      })}
-    </div>
-  </div>
-</div>
+  const isActive = activeSection === sectionKey;
 
+  return (
+    <button
+      key={item}
+      onClick={() => handleScrollTo(scrollMap[idx])}
+      className={`relative text-sm whitespace-nowrap transition-colors duration-300 ${
+        isActive
+          ? "text-primary font-semibold"
+          : "text-muted-foreground hover:text-primary"
+      }`}
+    >
+      {item}
+      {/* เส้นใต้ตอน active */}
+      <span
+        className={`absolute bottom-[-4px] left-0 h-[2px] bg-primary transition-all duration-300 ${
+          isActive ? "w-full" : "w-0 group-hover:w-full"
+        }`}
+      />
+    </button>
+  );
+})}
+
+            </div>
+
+            {/* 🔸 Divider + Trending News */}
+            <div className="flex items-center space-x-4 ml-8 pl-4 border-l border-primary/70">
+              <Link
+                to="https://www.youtube.com/channel/UCEq-QMRClwE9kVxWHc82hVw"
+                target="_blank"
+                className="flex items-center font-medium text-sm text-primary hover:text-primary transition-colors"
+              >
+                {language === "EN" ? "Trending News" : "ข่าวเด่น"}
+                <span className="ml-1 text-lg font-medium text-primary">›</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

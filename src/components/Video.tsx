@@ -104,12 +104,12 @@ export default function VideoSection() {
                 transition={{ duration: 0.6 }}
                 className="relative w-full h-full"
               >
-                <video
+                {/* <video
                   className="w-full h-full object-cover"
                   src={videoFile}
                   controls
                   autoPlay
-                />
+                /> */}
               </motion.div>
             )}
           </AnimatePresence>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Briefcase, TrendingUp, Cpu, Shield, Users, Zap } from "lucide-react";
+import { Hammer, Ruler, Cog, Truck, Layers, ShoppingCart } from "lucide-react";
 
 interface ServiceCardProps {
   icon: React.ReactNode;
@@ -36,7 +36,7 @@ const ServiceCard = ({ icon, title, description, index }: ServiceCardProps) => {
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
-      <div className="mb-6 inline-block p-4 bg-primary/10 rounded-lg group-hover:bg-gradient-primary transition-all duration-300">
+      <div className="mb-6 inline-block p-4 bg-primary/10 rounded-lg group-hover:bg-gradient-accent transition-all duration-300">
         <div className="text-primary group-hover:text-primary-foreground transition-colors duration-300">
           {icon}
         </div>
@@ -56,69 +56,84 @@ interface ServicesProps {
 }
 
 const Services = ({ language }: ServicesProps) => {
-  const services = language === "EN" ? [
-    {
-      icon: <Briefcase className="w-8 h-8" />,
-      title: "Strategic Consulting",
-      description: "Navigate complex business challenges with data-driven insights and proven methodologies.",
-    },
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: "Business Optimization",
-      description: "Maximize efficiency and profitability through streamlined processes and smart automation.",
-    },
-    {
-      icon: <Cpu className="w-8 h-8" />,
-      title: "IT Infrastructure",
-      description: "Build robust, scalable technology foundations that support your growth ambitions.",
-    },
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "Risk Management",
-      description: "Protect your assets with comprehensive security frameworks and compliance strategies.",
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: "Change Management",
-      description: "Lead successful transformations with expert guidance in organizational change.",
-    },
-    {
-      icon: <Zap className="w-8 h-8" />,
-      title: "Rapid Innovation",
-      description: "Accelerate time-to-market with agile development and innovative solutions.",
-    },
-  ] : [
-    {
-      icon: <Briefcase className="w-8 h-8" />,
-      title: "ที่ปรึกษาเชิงกลยุทธ์",
-      description: "นำทางความท้าทายทางธุรกิจที่ซับซ้อนด้วยข้อมูลเชิงลึกและวิธีการที่พิสูจน์แล้ว",
-    },
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: "การเพิ่มประสิทธิภาพธุรกิจ",
-      description: "เพิ่มประสิทธิภาพและผลกำไรสูงสุดผ่านกระบวนการที่คล่องตัวและระบบอัตโนมัติอัจฉริยะ",
-    },
-    {
-      icon: <Cpu className="w-8 h-8" />,
-      title: "โครงสร้างพื้นฐานไอที",
-      description: "สร้างฐานรากเทคโนโลยีที่แข็งแกร่งและขยายได้ที่สนับสนุนความทะเยอทะยานของคุณ",
-    },
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "การจัดการความเสี่ยง",
-      description: "ปกป้องสินทรัพย์ของคุณด้วยกรอบความปลอดภัยและกลยุทธ์การปฏิบัติตามข้อกำหนด",
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: "การจัดการการเปลี่ยนแปลง",
-      description: "นำการเปลี่ยนแปลงที่ประสบความสำเร็จด้วยคำแนะนำจากผู้เชี่ยวชาญ",
-    },
-    {
-      icon: <Zap className="w-8 h-8" />,
-      title: "นวัตกรรมอย่างรวดเร็ว",
-      description: "เร่งเวลาสู่ตลาดด้วยการพัฒนาแบบคล่องตัวและโซลูชันที่เป็นนวัตกรรม",
-    },
-  ];
+  const services =
+    language === "EN"
+      ? [
+          {
+            icon: <Hammer className="w-8 h-8 text-primary " />,
+            title: "Construction",
+            description:
+              "Delivering high-quality construction projects with precision, safety, and sustainability at every stage.",
+          },
+          {
+            icon: <Ruler className="w-8 h-8 text-primary" />,
+            title: "Detailing",
+            description:
+              "Providing expert structural detailing and fabrication drawings for efficient and accurate builds.",
+          },
+          {
+            icon: <Cog className="w-8 h-8 text-primary" />,
+            title: "Engineering",
+            description:
+              "Offering complete engineering solutions from design to execution by experienced professionals.",
+          },
+          {
+            icon: <Truck className="w-8 h-8 text-primary" />,
+            title: "Rental",
+            description:
+              "Supplying modern and well-maintained equipment for construction and industrial operations.",
+          },
+          {
+            icon: <Layers className="w-8 h-8 text-primary" />,
+            title: "ST&T",
+            description:
+              "Providing specialized services in Steel, Technology, and Testing to ensure quality and reliability.",
+          },
+          {
+            icon: <ShoppingCart className="w-8 h-8 text-primary" />,
+            title: "Trading",
+            description:
+              "Distributing high-quality construction materials and industrial products across multiple sectors.",
+          },
+        ]
+      : [
+          {
+            icon: <Hammer className="w-8 h-8 text-primary" />,
+            title: "งานก่อสร้าง",
+            description:
+              "ดำเนินโครงการก่อสร้างคุณภาพสูงด้วยความแม่นยำ ปลอดภัย และยั่งยืนในทุกขั้นตอน",
+          },
+          {
+            icon: <Ruler className="w-8 h-8 text-primary" />,
+            title: "งานออกแบบรายละเอียด",
+            description:
+              "ให้บริการจัดทำแบบโครงสร้างและแบบผลิตชิ้นงานอย่างมืออาชีพเพื่อการก่อสร้างที่มีประสิทธิภาพ",
+          },
+          {
+            icon: <Cog className="w-8 h-8 text-primary" />,
+            title: "วิศวกรรม",
+            description:
+              "ให้บริการวิศวกรรมครบวงจร ตั้งแต่การออกแบบไปจนถึงการดำเนินงาน โดยทีมงานผู้เชี่ยวชาญ",
+          },
+          {
+            icon: <Truck className="w-8 h-8 text-primary" />,
+            title: "งานให้เช่า",
+            description:
+              "ให้บริการเช่าอุปกรณ์และเครื่องมือก่อสร้างที่ทันสมัยและดูแลรักษาอย่างดี",
+          },
+          {
+            icon: <Layers className="w-8 h-8 text-primary" />,
+            title: "ST&T",
+            description:
+              "ให้บริการเฉพาะด้านในงานเหล็ก เทคโนโลยี และการทดสอบ เพื่อคุณภาพและความน่าเชื่อถือสูงสุด",
+          },
+          {
+            icon: <ShoppingCart className="w-8 h-8 text-primary" />,
+            title: "งานเทรดดิ้ง",
+            description:
+              "จำหน่ายวัสดุก่อสร้างและผลิตภัณฑ์อุตสาหกรรมคุณภาพสูงให้กับหลายภาคส่วน",
+          },
+        ];
 
   return (
     <section className="py-24 bg-background">

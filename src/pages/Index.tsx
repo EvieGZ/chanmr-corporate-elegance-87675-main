@@ -39,27 +39,27 @@ const Index = () => {
       />
       <Hero language={language} />
 
-      <section ref={refs.whoWeAre}>
+      <section id="whoWeAre" ref={refs.whoWeAre}>
         <VideoSection />
         <Quote language={language} />
         <AffiliatesSection language={language} />
       </section>
 
-      <section ref={refs.core}>
+      <section id="core" ref={refs.core}>
         <InteractiveNumbers language={language} />
         <Carousel language={language} />
       </section>
 
-      <section ref={refs.services}>
+      <section id="services" ref={refs.services}>
         <Services language={language} />
       </section>
-      <section ref={refs.news}>
+      <section id="news" ref={refs.news}>
         <About language={language} />
         <News language={language} />
         <InsightsSection language={language} />
         <CultureSection language={language} />
       </section>
-      <section ref={refs.faq}>
+      <section id="faq" ref={refs.faq}>
         <FAQSection language={language} />
       </section>
       <ConnectWithUs language={language} />
