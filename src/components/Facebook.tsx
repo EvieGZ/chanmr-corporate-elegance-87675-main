@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-
+import f1 from "@/assets/f-1.jpg";
+import f2 from "@/assets/f-2.jpg";
+import f3 from "@/assets/f-3.jpg";
 interface FacebookPost {
   id: string;
   messageEN?: string;
@@ -23,7 +25,7 @@ const mockFacebookPosts: FacebookPost[] = [
     messageTH:
       "🏗️ โครงการล่าสุดของเรา — คลังสินค้าลอจิสติกส์สมัยใหม่ กำลังจะเสร็จสมบูรณ์แล้ว! รอติดตามวันเปิดตัวเร็ว ๆ นี้",
     created_time: "2025-10-07T09:00:00+0000",
-    full_picture: "https://via.placeholder.com/600x400?text=Warehouse+Project",
+    full_picture: f1,
     permalink_url: "https://facebook.com",
   },
   {
@@ -33,7 +35,7 @@ const mockFacebookPosts: FacebookPost[] = [
     messageTH:
       "👷 ความปลอดภัยมาก่อนเสมอ! ทีมของเราตรวจสอบความปลอดภัยทุกสัปดาห์เพื่อให้ทุกโครงการดำเนินไปอย่างราบรื่น",
     created_time: "2025-10-06T14:30:00+0000",
-    full_picture: "https://www.facebook.com/photo/?fbid=1352147173582907&set=pcb.1352150863582538",
+    full_picture: f2,
     permalink_url: "https://facebook.com",
   },
   {
@@ -43,7 +45,7 @@ const mockFacebookPosts: FacebookPost[] = [
     messageTH:
       "🌱 สร้างอนาคตที่ยั่งยืน — เรานำวัสดุที่เป็นมิตรต่อสิ่งแวดล้อมมาใช้ในทุกโครงการ",
     created_time: "2025-10-05T18:45:00+0000",
-    full_picture: "https://via.placeholder.com/600x400?text=Green+Building",
+    full_picture: f3,
     permalink_url: "https://facebook.com",
   },
 ];

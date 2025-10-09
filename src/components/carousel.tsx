@@ -83,39 +83,44 @@ const Carousel = ({ language }: CarouselProps) => {
       </section>
 
       {/* Section Carousel (รูปภาพ) */}
-      <section className="relative w-full h-[80vh] overflow-hidden">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-            className="absolute inset-0"
-          >
-            {/* Background image */}
-            <img
-              src={slides[current].image}
-              alt={slides[current].title}
-              className="w-full h-full object-cover"
-            />
+      <section className="relative w-full h-[80vh] overflow-hidden bg-black">
+        {/* ใช้ AnimatePresence + absolute images ซ้อนกัน */}
+        <AnimatePresence mode="sync">
+          {slides.map((slide, i) =>
+            i === current ? (
+              <motion.div
+                key={current}
+                className="absolute inset-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.2, ease: "easeInOut" }}
+              >
+                {/* รูปพื้นหลัง */}
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  className="w-full h-full object-cover"
+                />
 
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/50" />
+                {/* Overlay ทึบซ้อนไว้เสมอ */}
+                <div className="absolute inset-0 bg-black/50" />
 
-            {/* Text in center */}
-            <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4">
-              <h2 className="text-4xl md:text-6xl font-bold mb-4 text-accent animate-fade-in">
-                {slides[current].title}
-              </h2>
-              <p className="text-lg md:text-xl max-w-2xl leading-relaxed">
-                {slides[current].text}
-              </p>
-            </div>
-          </motion.div>
+                {/* ข้อความตรงกลาง */}
+                <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4">
+                  <h2 className="text-4xl md:text-6xl font-bold mb-4 text-accent">
+                    {slide.title}
+                  </h2>
+                  <p className="text-lg md:text-xl max-w-2xl leading-relaxed">
+                    {slide.text}
+                  </p>
+                </div>
+              </motion.div>
+            ) : null
+          )}
         </AnimatePresence>
 
-        {/* Indicators */}
+        {/* จุด indicator */}
         <div className="absolute bottom-8 left-0 right-0 flex justify-center space-x-3">
           {slides.map((_, i) => (
             <button

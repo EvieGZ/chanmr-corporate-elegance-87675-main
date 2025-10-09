@@ -7,9 +7,18 @@ import logo from "@/assets/chanmr-logo.png";
 interface NavbarProps {
   language: "EN" | "TH";
   onLanguageToggle: () => void;
+  
+    sectionRefs?: {
+    whoWeAre: React.RefObject<HTMLElement>;
+    core: React.RefObject<HTMLElement>;
+    services: React.RefObject<HTMLElement>;
+    news: React.RefObject<HTMLElement>;
+    faq: React.RefObject<HTMLElement>;
+  };
+  
 }
 
-const Navbar = ({ language, onLanguageToggle }: NavbarProps) => {
+const Navbar = ({ language, onLanguageToggle, sectionRefs }: NavbarProps) => {
   const [scrolled, setScrolled] = useState(false);
   const [showSecondary, setShowSecondary] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,6 +28,14 @@ const Navbar = ({ language, onLanguageToggle }: NavbarProps) => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+const handleScrollTo = (ref?: React.RefObject<HTMLElement>) => {
+  window.scrollTo({
+    top: ref.current.offsetTop - 100,
+    behavior: "smooth",
+  });
+};
+
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       // ถ้ามี dropdown เปิดอยู่ และคลิกนอก dropdown
@@ -27,7 +44,7 @@ const Navbar = ({ language, onLanguageToggle }: NavbarProps) => {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setActiveMenu(null); // ปิดเมนู
+        setActiveMenu(null);
       }
     };
 
@@ -43,14 +60,14 @@ const Navbar = ({ language, onLanguageToggle }: NavbarProps) => {
     const handleScroll = () => {
       const current = window.scrollY;
 
-      if (current > lastScrollY && current > 60) {
+      if (current > lastScrollY && current > 50) {
         setHideTopNav(true);
       } else if (current < lastScrollY) {
         setHideTopNav(false);
       }
 
-      setScrolled(current > 50);
-      setShowSecondary(current > 100);
+      setScrolled(current > 100);
+      setShowSecondary(current > 650);
       setLastScrollY(current);
     };
 
@@ -60,23 +77,23 @@ const Navbar = ({ language, onLanguageToggle }: NavbarProps) => {
 
   const mainMenuItems =
     language === "EN"
-      ? ["Home", "About Us", "Services", "Projects", "Contact"]
-      : ["หน้าแรก", "เกี่ยวกับเรา", "บริการ", "โครงการ", "ติดต่อเรา"];
+      ? ["Home", "About Us", "Services","Products", "Projects", "Ethics", "News", "Contact"]
+      : ["หน้าแรก", "เกี่ยวกับเรา", "บริการ", "สินค้า", "จรรยาบรรณ", "โครงการ", "ข่าวสาร", "ติดต่อเรา"];
 
   const secondaryMenuItems =
     language === "EN"
       ? [
           "Who we are",
-          "How we help",
-          "Customer stories",
-          "Our expertise",
+          "Our Core",
+          "Our Services",
+          "Our News",
           "Q&A",
         ]
       : [
           "เราคือใคร",
-          "เราช่วยอย่างไร",
-          "เรื่องราวลูกค้า",
-          "ความเชี่ยวชาญ",
+          "หลักการของเรา",
+          "บริการของเรา",
+          "ข่าวสารของเรา",
           "คำถาม",
         ];
 
@@ -93,45 +110,47 @@ const Navbar = ({ language, onLanguageToggle }: NavbarProps) => {
     <>
       {/* 🌤️ Navbar */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        className={`fixed top-0 left-0 right-0 z-[70] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
           scrolled
             ? "bg-background/95 backdrop-blur-md shadow-sm"
             : "bg-background/95 backdrop-blur-sm"
         } ${hideTopNav ? "h-24" : "h-36"}`}
       >
         {/* 🔹 TopNav */}
-        <div
-          className={`flex justify-end text-xs text-primary py-2 px-6 space-x-6 transition-all duration-500 transform-gpu ${
-            hideTopNav
-              ? "-translate-y-[100%] opacity-0 pointer-events-none"
-              : "translate-y-0 opacity-100"
-          }`}
-        >
-          {topNav.map((item) =>
-            item.onClick ? (
-              <button
-                key={item.name}
-                onClick={item.onClick}
-                className="hover:text-accent transition-colors duration-300"
-              >
-                {item.name}
-              </button>
-            ) : (
-              <Link
-                key={item.name}
-                to={item.path}
-                className="hover:text-accent transition-colors duration-300"
-              >
-                {item.name}
-              </Link>
-            )
-          )}
-        </div>
+        {/* 🌤️ TopNav (แยกออกมาเลย) */}
+<div
+  className={`fixed top-5 left-0 right-0 z-[80] flex justify-end text-xs text-primary px-6 space-x-6 transition-all duration-500 transform-gpu ${
+    hideTopNav
+      ? "-translate-y-[100%] opacity-0 pointer-events-none"
+      : "translate-y-0 opacity-100"
+  }`}
+>
+  {topNav.map((item) =>
+    item.onClick ? (
+      <button
+        key={item.name}
+        onClick={item.onClick}
+        className="hover:text-accent transition-colors duration-300"
+      >
+        {item.name}
+      </button>
+    ) : (
+      <Link
+        key={item.name}
+        to={item.path}
+        className="hover:text-accent transition-colors duration-300"
+      >
+        {item.name}
+      </Link>
+    )
+  )}
+</div>
+
 
         {/* 🔸 Main Navbar */}
         <div
           className={`px-2 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-            hideTopNav ? "translate-y-[-32px]" : "translate-y-0"
+            hideTopNav ? "translate-y-[-20px]" : "translate-y-5"
           }`}
         >
           <div className="flex items-center container mx-auto justify-between">
@@ -178,7 +197,7 @@ const Navbar = ({ language, onLanguageToggle }: NavbarProps) => {
             <div
               ref={dropdownRef}
               className={`absolute left-0 ${
-                hideTopNav ? "top-[140px]" : "top-[112px]"
+                hideTopNav ? "top-[158px]" : "top-[112px]"
               } w-full bg-white shadow-xl grid grid-cols-3 gap-8 z-50 animate-fade-in`}
             >
               {/* Column 1 */}
@@ -262,27 +281,42 @@ const Navbar = ({ language, onLanguageToggle }: NavbarProps) => {
       </nav>
 
       {/* 🔹 Secondary Navbar */}
-      <div
-        className={`fixed left-0 right-0 z-40 bg-secondary border-b border-border transition-all duration-500 ${
-          showSecondary
-            ? "top-[95px] opacity-100"
-            : "top-0 opacity-0 pointer-events-none"
-        }`}
-      >
-        <div className="container mx-auto px-6">
-          <div className="flex items-center space-x-6 py-3 overflow-x-auto">
-            {secondaryMenuItems.map((item) => (
-              <Link
-                key={item}
-                to="#"
-                className="text-sm text-muted-foreground hover:text-primary whitespace-nowrap transition-colors duration-300"
-              >
-                {item}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+<div
+  className={`fixed left-0 right-0 z-[40] bg-secondary border-b border-border transition-all duration-500 ${
+    showSecondary
+      ? "top-[94px] opacity-100"
+      : "top-0 opacity-0 pointer-events-none"
+  }
+  ${hideTopNav ? "translate-y-0" : "translate-y-12"}    
+  `
+  }
+>
+  <div className="container mx-auto px-6">
+    <div className="flex items-center space-x-6 py-3 overflow-x-auto">
+      {secondaryMenuItems.map((item, idx) => {
+        // ✅ map ค่าปุ่มแต่ละอันกับ section ที่เกี่ยวข้อง
+        const scrollMap = [
+          sectionRefs?.whoWeAre,
+          sectionRefs?.core,
+          sectionRefs?.services,
+          sectionRefs?.news,
+          sectionRefs?.faq,
+        ];
+
+        return (
+          <button
+            key={item}
+            onClick={() => handleScrollTo(scrollMap[idx]!)}
+            className="text-sm text-muted-foreground hover:text-primary whitespace-nowrap transition-colors duration-300"
+          >
+            {item}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+</div>
+
     </>
   );
 };
