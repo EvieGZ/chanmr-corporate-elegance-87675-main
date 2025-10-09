@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import logo from "@/assets/chanmr-logo.png";
@@ -171,9 +171,13 @@ const Navbar = ({ language, onLanguageToggle, sectionRefs }: NavbarProps) => {
               <button
                 key={item.name}
                 onClick={item.onClick}
-                className="hover:text-accent transition-colors duration-300"
+                className="flex items-center space-x-1 hover:text-accent transition-colors duration-300"
               >
-                {item.name}
+                {/* ✅ เพิ่มลูกโลกเฉพาะปุ่มภาษา */}
+                {item.name === "TH" || item.name === "EN" ? (
+                  <Globe className="w-4 h-4" />
+                ) : null}
+                <span>{item.name}</span>
               </button>
             ) : (
               <Link
