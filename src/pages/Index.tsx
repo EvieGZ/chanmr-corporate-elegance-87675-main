@@ -40,7 +40,7 @@ const Index = () => {
       <Hero language={language} />
 
       <section id="whoWeAre" ref={refs.whoWeAre}>
-        <VideoSection />
+        <VideoSection language={language} />
         <Quote language={language} />
         <AffiliatesSection language={language} />
       </section>
